@@ -1,28 +1,6 @@
-### Post 'Hello!"
-POST http://localhost:8080/
-Content-Type: application/json
 
-{
-  "text": "Hello!"
-}
+### Get all the mandatory roadmaps
+GET http://localhost:8080/mandatory
 
-### Post "Bonjour!"
-
-POST http://localhost:8080/
-Content-Type: application/json
-
-{
-  "text": "Bonjour!"
-}
-
-### Post "Privet!"
-
-POST http://localhost:8080/
-Content-Type: application/json
-
-{
-  "text": "Privet!"
-}
-
-### Get all the messages
-GET http://localhost:8080/
+### Get all the optional roadmaps
+GET http://localhost:8080/mandatory
