@@ -1,44 +1,61 @@
 package io.simplify.infra.adapter
 
+import io.simplify.core.roadmaps.domain.Roadmap
+import io.simplify.core.roadmaps.domain.Step
+import io.simplify.core.roadmaps.port.`in`.RoadmapsClassifier
+import io.simplify.core.roadmaps.port.out.RoadmapsRepository
 import org.springframework.data.annotation.Id
 import org.springframework.data.jdbc.repository.query.Query
 import org.springframework.data.relational.core.mapping.Table
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class MessageResource(val messageService: MessageService) {
-    @GetMapping
-    fun allMessages(): List<Message> = messageService.findMessages()
+class RoadmapsHttpAdapter(val roadmapsClassified: RoadmapsClassified) {
 
-    @PostMapping
-    fun createMessage(@RequestBody message: Message) {
-        messageService.post(message)
-    }
+    @GetMapping("/mandatory")
+    fun mandatory(): List<Roadmap> = roadmapsClassified.mandatory()
+
+    @GetMapping("/optional")
+    fun optional(): List<Roadmap> = roadmapsClassified.optional()
+
 }
 
-@Table("MESSAGES")
-data class Message(@Id val id: String?, val text: String)
+@Table("ROADMAPS")
+data class RoadmapEntity(@Id val id: String?, val mentor: String, val steps: List<Step>)
 
-interface MessageRepository : CrudRepository<Message, String> {
+interface RoadmapCrudRepository : CrudRepository<RoadmapEntity, String> {
 
-    @Query("select * from messages")
-    fun findMessages(): List<Message>
+    @Query("select * from roadmaps")
+    fun findAllRoadmaps(): List<RoadmapEntity>
 }
 
 @Service
-class MessageService(val messageRepository: MessageRepository) {
+class RoadmapH2Repository(val roadmapCrudRepository: RoadmapCrudRepository) : RoadmapsRepository {
 
-    fun findMessages(): List<Message> = messageRepository.findMessages()
-
-    fun post(message: Message) {
-        messageRepository.save(message)
+    override fun findAllRoadmaps(): List<Roadmap> {
+        return roadmapCrudRepository.findAllRoadmaps().map {
+            Roadmap(it.mentor, it.steps)
+        }
     }
+}
+
+
+@Service
+class RoadmapsClassified(val roadmapsClassifier: RoadmapsClassifier) {
+
+    fun mandatory(): List<Roadmap> {
+        return roadmapsClassifier.mandatory()
+    }
+
+    fun optional(): List<Roadmap> {
+        return roadmapsClassifier.optional()
+    }
+
+
 }
 
 
