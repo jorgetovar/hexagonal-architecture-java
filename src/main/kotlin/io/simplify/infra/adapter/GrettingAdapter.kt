@@ -10,11 +10,13 @@ import org.springframework.data.relational.core.mapping.Table
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class RoadmapsHttpAdapter(val roadmapsClassified: RoadmapsClassified) {
+class RoadmapsHttpAdapter(val roadmapsClassified: RoadmapsClassified, val roadmapService: RoadmapService) {
 
     @GetMapping("/mandatory")
     fun mandatory(): List<Roadmap> = roadmapsClassified.mandatory()
@@ -22,10 +24,19 @@ class RoadmapsHttpAdapter(val roadmapsClassified: RoadmapsClassified) {
     @GetMapping("/optional")
     fun optional(): List<Roadmap> = roadmapsClassified.optional()
 
+    @PostMapping("/roadmap")
+    fun createResource(@RequestBody roadmap: Roadmap) {
+        roadmapService.create(roadmap)
+    }
+
 }
 
 @Table("ROADMAPS")
-data class RoadmapEntity(@Id val id: String?, val mentor: String, val steps: List<Step>)
+data class RoadmapEntity(@Id val id: String?, val mentor: String, val steps: List<StepEntity>)
+
+@Table("Steps")
+data class StepEntity(@Id val id: String?, val resourceLink: String)
+
 
 interface RoadmapCrudRepository : CrudRepository<RoadmapEntity, String> {
 
@@ -33,14 +44,24 @@ interface RoadmapCrudRepository : CrudRepository<RoadmapEntity, String> {
     fun findAllRoadmaps(): List<RoadmapEntity>
 }
 
+
 @Service
 class RoadmapH2Repository(val roadmapCrudRepository: RoadmapCrudRepository) : RoadmapsRepository {
 
     override fun findAllRoadmaps(): List<Roadmap> {
         return roadmapCrudRepository.findAllRoadmaps().map {
-            Roadmap(it.mentor, it.steps)
+            Roadmap(it.mentor, listOf())
         }
     }
+}
+
+@Service
+class RoadmapService(val roadmapCrudRepository: RoadmapCrudRepository) {
+
+    fun create(roadmap: Roadmap) {
+        roadmapCrudRepository.save(RoadmapEntity(null, roadmap.mentor, listOf()))
+    }
+
 }
 
 

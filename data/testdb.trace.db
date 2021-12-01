@@ -4,3 +4,6 @@ select * from roadmaps [42102-200]
 2021-12-01 18:01:17 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS STEPS ( ID INT DEFAULT RANDOM() PRIMARY KEY, RESOURCE_LINK VARCHAR NOT NULL, )[*]"; expected "identifier"; SQL statement:
 CREATE TABLE IF NOT EXISTS steps ( id INT DEFAULT RANDOM() PRIMARY KEY, resource_link VARCHAR NOT NULL, ) [42001-200]
+2021-12-01 18:18:33 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "Steps" not found; SQL statement:
+SELECT "Steps"."ID" AS "ID", "Steps"."RESOURCE_LINK" AS "RESOURCE_LINK", "Steps"."ROADMAPS_KEY" AS "ROADMAPS_KEY" FROM "Steps" WHERE "Steps"."ROADMAP_ENTITY" = ? ORDER BY "ROADMAPS_KEY" [42102-200]
