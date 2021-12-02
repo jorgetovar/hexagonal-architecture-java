@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group 'io.simplify'
+version '0.0.1-SNAPSHOT'
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+}
+
+test {
+    useJUnitPlatform()
+}

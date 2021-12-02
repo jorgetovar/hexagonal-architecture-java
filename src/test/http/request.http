@@ -1,0 +1,6 @@
+
+### Get all the mandatory roadmaps
+GET http://localhost:8080/mandatory
+
+### Get all the optional roadmaps
+GET http://localhost:8080/optional
