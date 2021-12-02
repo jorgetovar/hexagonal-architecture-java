@@ -6,6 +6,7 @@ import io.simplify.core.roadmaps.port.`in`.RoadmapsClassifier
 import io.simplify.core.roadmaps.port.out.RoadmapsRepository
 import org.springframework.data.annotation.Id
 import org.springframework.data.jdbc.repository.query.Query
+import org.springframework.data.relational.core.mapping.MappedCollection
 import org.springframework.data.relational.core.mapping.Table
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Service
@@ -32,16 +33,19 @@ class RoadmapsHttpAdapter(val roadmapsClassified: RoadmapsClassified, val roadma
 }
 
 @Table("ROADMAPS")
-data class RoadmapEntity(@Id val id: String?, val mentor: String, val steps: List<StepEntity>)
+data class RoadmapE(
+    @Id val id: String?, val mentor: String,
+    @MappedCollection(idColumn = "STEP_ID", keyColumn = "STEP_ID") val steps: List<StepE>
+)
 
-@Table("Steps")
-data class StepEntity(@Id val id: String?, val resourceLink: String)
+@Table("STEPS")
+data class StepE(@Id val stepId: String?, val resourceLink: String)
 
 
-interface RoadmapCrudRepository : CrudRepository<RoadmapEntity, String> {
+interface RoadmapCrudRepository : CrudRepository<RoadmapE, String> {
 
     @Query("select * from roadmaps")
-    fun findAllRoadmaps(): List<RoadmapEntity>
+    fun findAllRoadmaps(): List<RoadmapE>
 }
 
 
@@ -49,8 +53,10 @@ interface RoadmapCrudRepository : CrudRepository<RoadmapEntity, String> {
 class RoadmapH2Repository(val roadmapCrudRepository: RoadmapCrudRepository) : RoadmapsRepository {
 
     override fun findAllRoadmaps(): List<Roadmap> {
-        return roadmapCrudRepository.findAllRoadmaps().map {
-            Roadmap(it.mentor, listOf())
+        val roadmaps = roadmapCrudRepository.findAllRoadmaps()
+        println(roadmaps)
+        return roadmaps.map { e ->
+            Roadmap(e.mentor, e.steps.map { Step(it.resourceLink) })
         }
     }
 }
@@ -59,7 +65,8 @@ class RoadmapH2Repository(val roadmapCrudRepository: RoadmapCrudRepository) : Ro
 class RoadmapService(val roadmapCrudRepository: RoadmapCrudRepository) {
 
     fun create(roadmap: Roadmap) {
-        roadmapCrudRepository.save(RoadmapEntity(null, roadmap.mentor, listOf()))
+        val steps = roadmap.steps.map { StepE(null, it.resourceLink) }
+        roadmapCrudRepository.save(RoadmapE(null, roadmap.mentor, steps))
     }
 
 }

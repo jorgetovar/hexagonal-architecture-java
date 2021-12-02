@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS steps
 (
-    id            INT DEFAULT RANDOM() PRIMARY KEY,
+    step_id       VARCHAR(60) DEFAULT RANDOM_UUID() PRIMARY KEY,
     resource_link VARCHAR NOT NULL
 );
 
@@ -10,6 +10,6 @@ CREATE TABLE IF NOT EXISTS roadmaps
     mentor  VARCHAR NOT NULL,
     step_id INT,
 
-    CONSTRAINT fk_steps FOREIGN KEY (step_id) REFERENCES steps (id)
+    CONSTRAINT fk_steps FOREIGN KEY (step_id) REFERENCES steps (step_id)
 
 );
