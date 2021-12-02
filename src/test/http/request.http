@@ -4,20 +4,3 @@ GET http://localhost:8080/mandatory
 
 ### Get all the optional roadmaps
 GET http://localhost:8080/optional
-
-### Post "Create Resource"
-
-POST http://localhost:8080/roadmap
-Content-Type: application/json
-
-{
-  "mentor": "Rich Hickey",
-  "steps": [
-    {
-      "resourceLink": "link1"
-    },
-    {
-      "resourceLink": "link2"
-    }
-  ]
-}
