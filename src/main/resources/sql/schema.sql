@@ -15,11 +15,11 @@ CREATE TABLE IF NOT EXISTS roadmaps
 );
 
 INSERT INTO steps
-values (0, 'link0');
+values (0, 'https://www.youtube.com/watch?v=SxdOUGdseq4');
 INSERT INTO steps
-values (1, 'link1');
+values (1, 'https://www.youtube.com/watch?v=YR5WdGrpoug');
 INSERT INTO steps
-values (2, 'link2');
+values (2, 'https://www.youtube.com/watch?v=2V1FtfBDsLU');
 INSERT INTO roadmaps
 values ('0', 'Rich Hickey', 0);
 INSERT INTO roadmaps
