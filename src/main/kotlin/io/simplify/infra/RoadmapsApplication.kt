@@ -11,8 +11,9 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class RoadmapsConfiguration {
+
     @Bean
-    fun roadmaps(roadmapH2Repository: RoadmapH2Repository): RoadmapsClassifier {
+    fun roadmapsClassifier(roadmapH2Repository: RoadmapH2Repository): RoadmapsClassifier {
         return RoadmapsClassifierByMentor(roadmapH2Repository)
     }
 }
