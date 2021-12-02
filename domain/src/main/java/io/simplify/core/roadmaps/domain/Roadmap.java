@@ -8,6 +8,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Roadmap {
     private String mentor;
     private Recommendation recommendation;

@@ -1,5 +1,6 @@
 package io.simplify.core.roadmaps.usecase;
 
+import io.simplify.core.roadmaps.domain.Recommendation;
 import io.simplify.core.roadmaps.domain.Roadmap;
 import io.simplify.core.roadmaps.port.in.RoadmapsClassifier;
 import io.simplify.core.roadmaps.port.out.RoadmapsRepository;
@@ -24,18 +25,19 @@ public class RoadmapsClassifierByMentor implements RoadmapsClassifier {
 
     @Override
     public List<Roadmap> mandatory() {
-        return classify(e -> moreThan20YearsOfExperience.contains(e.getMentor()));
+        return classify(e -> moreThan20YearsOfExperience.contains(e.getMentor()), Recommendation.MANDATORY);
     }
 
     @Override
     public List<Roadmap> optional() {
-        return classify(e -> atLeast10YearsOfExperience.contains(e.getMentor()));
+        return classify(e -> atLeast10YearsOfExperience.contains(e.getMentor()), Recommendation.OPTIONAL);
     }
 
-    private List<Roadmap> classify(Predicate<Roadmap> roadmapPredicate) {
+    private List<Roadmap> classify(Predicate<Roadmap> roadmapPredicate, Recommendation recommendation) {
         return roadmapsRepository.findAllRoadmaps()
                 .stream()
                 .filter(roadmapPredicate)
+                .map(e -> new Roadmap(e.getMentor(), recommendation, e.getSteps()))
                 .collect(toList());
     }
 
