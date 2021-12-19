@@ -1,5 +1,6 @@
 # Hexagonal Architecture
 
+[Dev.to Hexagonal Architecture Article](https://dev.to/jorgetovar621/hexagonal-architecture-javakotlin-example-15i7)
 
 I have been working on many projects that claim to be using the Hexagonal Architecture Style. All of them inspired this article because they have some interesting ideas or perhaps I didn't agree with the implemented structure (Business logic with Frameworks dependencies). 
 
@@ -28,6 +29,23 @@ Low-level abstractions module depends on domain module (Business logic):
 
 ` implementation(project(":domain"))`
 
+
+### Build from source
+
+Compile and run tests:
+`./gradlew clean build`
+
+Run the application:
+`./gradlew bootRun`
+
+![Spring boot running](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4ijyp564tihug0fj4st0.png)
+
+Running HTTP calls:
+
+The [HTTPie](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html) client in IntelliJ IDEA.
+
+![Http test](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q1qwkxn72k9ntzng59o6.png)
+ 
 ## Clean Architecture 
 
 Good design in software is about the way in which we organize the code of the system to manage complexity. The idea is to create modular systems with high cohesion and low coupling, and after all, promote separation of concerns and allow some flexibility to evolve our systems. 
@@ -52,7 +70,8 @@ They are the abstractions of what a user can do (Input ports), and any external 
 They are the implementation of the **Ports**. Low-level details, the database, the HTTP controller, the CLI, basically the glue between the users and the core of our business (use-cases).
 
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/d09cs5fobzwe8r9k3fju.png)
+![Clean Architecture Reflectoring](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/d09cs5fobzwe8r9k3fju.png)
+
 
 ## Onion Architecture
 
@@ -83,6 +102,6 @@ If we need to change the database, ever the framework is easy. We just need to i
 
 ## Resources
 
-- [Reflectoring](https://reflectoring.io/spring-hexagonal/)
+- [Reflectoring Clean Architecture](https://reflectoring.io/spring-hexagonal/)
 - [Clean Architecture by Uncle Bob](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)  
  
