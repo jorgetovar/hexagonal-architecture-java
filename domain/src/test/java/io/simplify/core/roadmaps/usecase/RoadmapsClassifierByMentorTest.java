@@ -1,41 +1,53 @@
 package io.simplify.core.roadmaps.usecase;
 
+import io.simplify.core.roadmaps.domain.Recommendation;
 import io.simplify.core.roadmaps.domain.Roadmap;
 import io.simplify.core.roadmaps.domain.Step;
 import io.simplify.core.roadmaps.port.out.RoadmapsRepository;
+import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static io.simplify.core.roadmaps.domain.Recommendation.MANDATORY;
+import static io.simplify.core.roadmaps.domain.Recommendation.OPTIONAL;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.atIndex;
 
 class RoadmapsClassifierByMentorTest {
+
+    private final Roadmap roadmap = new Roadmap("Rich Hickey", List.of(new Step("https://www.youtube.com/watch?v=SxdOUGdseq4")));
+
 
     class StubRepository implements RoadmapsRepository {
 
         @Override
         public List<Roadmap> findAllRoadmaps() {
-            return List.of(new Roadmap("Rich Hickey", List.of(new Step("https://www.youtube.com/watch?v=SxdOUGdseq4"))));
+            return List.of(roadmap);
         }
+
     }
 
     @Test
     void mandatory() {
-
         RoadmapsClassifierByMentor roadmapsClassifierByMentor = new RoadmapsClassifierByMentor(new StubRepository());
         List<Roadmap> mandatory = roadmapsClassifierByMentor.mandatory();
-        assertEquals(mandatory.size(), 1);
-        Optional<Roadmap> clojureHacker = mandatory.stream().findFirst();
-        clojureHacker.ifPresent(e -> assertEquals(e.getMentor(), "Rich Hickey"));
+        assertThat(mandatory).hasSize(1);
+        assertThat(mandatory).has(recommendation(MANDATORY, "All rich hickey talks are a must see"), atIndex(0));
     }
 
     @Test
     void optional() {
-
         RoadmapsClassifierByMentor roadmapsClassifierByMentor = new RoadmapsClassifierByMentor(new StubRepository());
         List<Roadmap> optional = roadmapsClassifierByMentor.optional();
-        assertEquals(optional.size(), 0);
+        assertThat(optional).isEmpty();
 
+    }
+
+    private Condition<Roadmap> recommendation(Recommendation recommendation, String description) {
+        return new Condition<>(
+                m -> m.getRecommendation().equals(recommendation),
+                description
+        );
     }
 }
