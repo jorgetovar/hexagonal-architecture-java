@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.simplify.core.roadmaps.domain.Recommendation.MANDATORY;
-import static io.simplify.core.roadmaps.domain.Recommendation.OPTIONAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.atIndex;
 
@@ -33,8 +31,9 @@ class RoadmapsClassifierByMentorTest {
         RoadmapsClassifierByMentor roadmapsClassifierByMentor = new RoadmapsClassifierByMentor(new StubRepository());
         List<Roadmap> mandatory = roadmapsClassifierByMentor.mandatory();
         assertThat(mandatory).hasSize(1);
-        assertThat(mandatory).has(recommendation(MANDATORY, "All rich hickey talks are a must see"), atIndex(0));
+        assertThat(mandatory).has(recommendation(), atIndex(0));
     }
+
 
     @Test
     void optional() {
@@ -44,10 +43,10 @@ class RoadmapsClassifierByMentorTest {
 
     }
 
-    private Condition<Roadmap> recommendation(Recommendation recommendation, String description) {
+    private Condition<Roadmap> recommendation() {
         return new Condition<>(
-                m -> m.getRecommendation().equals(recommendation),
-                description
+                m -> m.getRecommendation().equals(Recommendation.MANDATORY),
+                "All rich hickey talks are a must see"
         );
     }
 }

@@ -2,7 +2,7 @@
 
 [Dev.to Hexagonal Architecture Article](https://dev.to/jorgetovar621/hexagonal-architecture-javakotlin-example-15i7)
 
-I have been working on many projects that claim to be using the Hexagonal Architecture Style. All of them inspired this article because they have some interesting ideas or perhaps I didn't agree with the implemented structure (Business logic with Frameworks dependencies). 
+I have been working on many projects that claim to be using the Hexagonal Architecture Style. All of them inspired this article because they have some interesting ideas, or perhaps I didn't agree with the implemented structure (Business logic with Frameworks dependencies). 
 
 The goal of this post is to create an open-source artifact that exposes the fundamental ideas of Clean Architecture: 
 
@@ -13,7 +13,7 @@ The goal of this post is to create an open-source artifact that exposes the fund
 - Independent of any external service
 - **Inversion of dependencies**: Low level **(Infrastructure: UI, Database, Integrations)** modules depends on High Level abstractions **(Business Logic)**
 
-[Github Repository](https://github.com/jorgetovar/hexagonal-architecture-java)
+[GitHub Repository](https://github.com/jorgetovar/hexagonal-architecture-java)
 
 To keep the example simple: we create a basic Use-case where based on some resources and the authors/mentors mark them as optional or mandatory.
 
